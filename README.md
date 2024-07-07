@@ -14,6 +14,9 @@ Quick and dirty Arduino sketch that uses a NodeMCU board to control four relays 
 const char* ssid = "SSID_HERE";
 const char* password = "PASSWORD_HERE";
 
+// Enter OTA password if desired
+const char* ota_pw = "OTA_PASSWORD_HERE";
+
 #endif
 ```
 
