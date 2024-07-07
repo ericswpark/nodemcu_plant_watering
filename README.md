@@ -19,5 +19,5 @@ const char* ota_pw = "OTA_PASSWORD_HERE";
 
 #endif
 ```
-
+- Review `Config.h` for any configuration changes you may wish to make
 - Compile and upload
