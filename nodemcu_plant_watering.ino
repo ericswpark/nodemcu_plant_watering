@@ -88,7 +88,7 @@ void handleM4(void)
   handleMotor(3);
 }
 
-void setup(void)
+void motorSetup(void)
 {
   // Initialize motor values to false and setup pins
   for (int chan = 0; chan < CHANNEL_COUNT; chan++)
@@ -97,13 +97,16 @@ void setup(void)
     pinMode(motorPins[chan], OUTPUT);
     digitalWrite(motorPins[chan], LOW);
   }
+}
 
-  // Setup serial and begin setup process
+void serialSetup(void)
+{
   Serial.begin(115200);
   Serial.println(); // Clear ESP8266 setup output
-  Serial.println("Setup in progress, please wait...");
+}
 
-  // Setup Wi-Fi
+void wiFiSetup(void)
+{
   WiFi.persistent(true);
   WiFi.mode(WIFI_STA);
   // This is required due to an interaction bug
@@ -117,11 +120,10 @@ void setup(void)
     ESP.restart();
   }
   Serial.println();
+}
 
-  Serial.print("Successfully connected with IP address: ");
-  Serial.println(WiFi.localIP());
-
-  // Setup OTA
+void otaSetup(void)
+{
   ArduinoOTA.setPassword(ota_pw);
     ArduinoOTA.onStart([]() {
     Serial.println("Receiving new firmware through OTA...");
@@ -141,7 +143,10 @@ void setup(void)
     else if (error == OTA_END_ERROR) Serial.println("End Failed");
   });
   ArduinoOTA.begin();
+}
 
+void serverSetup(void)
+{
   server.on("/", handleMain);
   server.on("/s1", handleS1);
   server.on("/s2", handleS2);
@@ -155,7 +160,10 @@ void setup(void)
   Serial.println("Starting server...");
   server.begin();
   Serial.println("Server started");
+}
 
+void adsSetup(void)
+{
   // The ADC input range (or gain) can be changed via the following
   // functions, but be careful never to exceed VDD +0.3V max, or to
   // exceed the upper and lower limits if you adjust the input range!
@@ -176,7 +184,19 @@ void setup(void)
       yield();
     }
   }
+}
 
+void setup(void)
+{
+  motorSetup();
+  serialSetup();
+  Serial.println("Setup in progress, please wait...");
+  wiFiSetup();
+  Serial.print("Successfully connected with IP address: ");
+  Serial.println(WiFi.localIP());
+  otaSetup();
+  serverSetup();
+  adsSetup();
   Serial.println("Setup complete.");
 }
 
