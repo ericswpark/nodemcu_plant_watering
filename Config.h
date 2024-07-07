@@ -11,6 +11,8 @@
 #define RELAY_TWO D4
 #define RELAY_THREE D5
 #define RELAY_FOUR D6
+// Set if the relay is flipped (HIGH results in off)
+#define RELAY_REVERSE true
 
 
 #endif

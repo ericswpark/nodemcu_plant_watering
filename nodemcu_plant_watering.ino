@@ -15,6 +15,14 @@ Prerequisites:
 #include "Config.h"
 #include "HTMLData.h"
 
+#if (RELAY_REVERSE == true)
+  #define RELAY_OFF HIGH
+  #define RELAY_ON LOW
+#else
+  #define RELAY_OFF LOW
+  #define RELAY_ON HIGH
+#endif
+
 ESP8266WebServer server(80);
 
 Adafruit_ADS1115 ads;
@@ -60,10 +68,10 @@ void handleMotor(int pin)
   motorStatus[pin] = !status;
 
   if (status) {
-    digitalWrite(motorPins[pin], LOW);
+    digitalWrite(motorPins[pin], RELAY_OFF);
     server.send(200, "text/plain", "OFF");
   } else {
-    digitalWrite(motorPins[pin], HIGH);
+    digitalWrite(motorPins[pin], RELAY_ON);
     server.send(200, "text/plain", "ON");
   } 
 }
@@ -95,7 +103,7 @@ void motorSetup(void)
   {
     motorStatus[chan] = false;
     pinMode(motorPins[chan], OUTPUT);
-    digitalWrite(motorPins[chan], LOW);
+    digitalWrite(motorPins[chan], RELAY_OFF);
   }
 }
 
